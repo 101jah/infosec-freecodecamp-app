@@ -2,32 +2,38 @@ const express = require('express');
 const helmet = require('helmet');
 const app = express();
 
-
 var timeInSeconds = 90*24*60*60;
 
 
 
 
 
-app.use(helmet());
-app.use(helmet.hidePoweredBy());
+app.use(helmet({
+  rameguard: {         // configure
+    action: 'enable'
+  },
+  contentSecurityPolicy: {    // enable and configure
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ['style.com'],
+    }
+  },
+  dnsPrefetchControl: false,
+  hidePoweredBy: false,
+  frameguard: { action: 'deny' },
+  xssFilter: false,
+  noSniff: false,
+  ieNoOpen: false,
+  hsts: {maxAge: timeInSeconds, force: true},
+  dnsPrefetchControl: false,
+  noCache: false
 
-app.use(helmet.frameguard({ action: 'deny' }));
-
-app.use(helmet.xssFilter());
-
-app.use(helmet.noSniff());
-
-app.use(helmet.ieNoOpen());
-
-app.use(helmet.hsts({maxAge: timeInSeconds, force: true}));
-
-
-app.use(helmet.dnsPrefetchControl());
 
 
 
 
+
+}));
 
 
 
